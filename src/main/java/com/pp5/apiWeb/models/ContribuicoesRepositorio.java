@@ -1,4 +1,4 @@
-package com.model;
+package com.pp5.apiWeb.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

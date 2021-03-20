@@ -1,4 +1,4 @@
-package com.model;
+package com.pp5.apiWeb.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,6 +9,17 @@ public class Repositorio {
 	
 	@JsonProperty("name")
 	private String nome;
+
+	
+	public Repositorio() {
+		super();
+	}
+
+	public Repositorio(String linguagem, String nome) {
+		super();
+		this.linguagem = linguagem;
+		this.nome = nome;
+	}
 
 	public String getLinguagem() {
 		return linguagem;
