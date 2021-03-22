@@ -7,32 +7,24 @@
 </head>
 <body>
 
-
-	<form action="#" th:action="${testar}" method="GET">
-
-		Usuario:<br> <input type="text" name="user"><br> <br>
-
-		<input type="submit" value="porcentagens">
-
+	<form action="/index" method="get">
+		<label for="nome">Nome: </label> <input name="user" />
+		<button type="submit">mandar</button>
 	</form>
-	<!-- 	<span th:text="${aluno}">
-		
-	</span>
-	
-	<br>
-		<span th:text="${repositorios.nome}">
-		
-	</span>
 
-	<form action="github/" method="GET">
 
-		Usuario:<br> <input type="text" name="user"><br> <br>
+	<span th:text="${listaRepositorios != null} ? ${listaRepositorios} : 'null value!'">someValue</span>
 
-		<input type="submit" value="porcentagens">
 
-	</form>
- -->
-
+	<table>
+		<th:block th:each="porcentagem : ${listaPorcentagens}">
+			<tr>
+				<td th:text="${porcentagem}">...</td>
+				<td th:text="${porcentagem?.linguagem}">...</td>
+				<td th:text="${porcentagem?.porcentagem}">...</td>
+			</tr>
+		</th:block>
+	</table>
 
 </body>
 </html>
