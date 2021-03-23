@@ -61,7 +61,7 @@ public class GitHubServiceController {
 				}
 
 			} else if (!porcentagensLinguagem.stream().anyMatch(x -> x.getLinguagem().equals(repos.getLinguagem()))) {
-				porcentagensLinguagem.add(new PorcentagemLinguagens(repos.getLinguagem(), 1));
+				porcentagensLinguagem.add(new PorcentagemLinguagens(repos.getLinguagem(), user, 1));
 			} else {
 
 				PorcentagemLinguagens percent = porcentagensLinguagem.stream()
@@ -80,7 +80,7 @@ public class GitHubServiceController {
 
 		for (PorcentagemLinguagens item : porcentagensLinguagem) {
 			item.calcularPercent(repositorios.size());
-			System.out.println(item.toString() + " qtd total: " + repositorios.size());
+//			System.out.println(item.toString() + " qtd total: " + repositorios.size());
 		}
 
 		return porcentagensLinguagem;
@@ -93,11 +93,11 @@ public class GitHubServiceController {
 			RestTemplate template = new RestTemplate();
 
 			if (linguagemRepos == null || linguagemRepos == "") {
-				throw new CampoInvalidoException("Informe a linguagem do reposit√≥rio.");
+				throw new CampoInvalidoException("Informe a linguagem do repositÛrio.");
 			}
 
 			if (user == null || user == "") {
-				throw new CampoInvalidoException("Informe o nome do usuario dono do reposit√≥rio.");
+				throw new CampoInvalidoException("Informe o nome do usuario dono do repositÛrio.");
 			}
 
 			UriComponents uri = UriComponentsBuilder.newInstance().scheme("https").host("api.github.com")
@@ -107,7 +107,7 @@ public class GitHubServiceController {
 			Repositorio[] listaRepositorio = response.getBody();
 
 			if (listaRepositorio == null || listaRepositorio.length == 0)
-				throw new CampoInvalidoException("Nenhum repositorio foi encontrado para o usu√°rio " + user + ".");
+				throw new CampoInvalidoException("Nenhum repositorio foi encontrado para o usu·rio " + user + ".");
 
 			List<Repositorio> repositorios = Arrays.asList(listaRepositorio);
 
@@ -139,7 +139,7 @@ public class GitHubServiceController {
 	// https://api.github.com/repos/nomeUsuario/nomeRepositorio/contributors
 
 	@GetMapping("/{user}/{nomeRepositorio}/contribuicoes")
-	public List<UsuarioContribuicao> listarContribuicoes(@PathVariable String user,
+	public static List<UsuarioContribuicao> listarContribuicoes(@PathVariable String user,
 			@PathVariable String nomeRepositorio) {
 		RestTemplate template = new RestTemplate();
 

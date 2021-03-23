@@ -4,7 +4,17 @@ public class PorcentagemLinguagens {
 
 	private String linguagem;
 	private Double porcentagem;
+	private String usuario;
 	private int qtd;
+	
+	
+
+	public PorcentagemLinguagens(String linguagem, String usuario, int qtd) {
+		super();
+		this.linguagem = linguagem;
+		this.usuario = usuario;
+		this.qtd = qtd;
+	}
 
 	public PorcentagemLinguagens(String linguagem, int qtd) {
 		super();
@@ -17,14 +27,15 @@ public class PorcentagemLinguagens {
 		this.linguagem = linguagem;
 		this.porcentagem = porcentagem;
 	}
-	
+
 	public void calcularPercent(int totalQtd) {
 		porcentagem = ((double) qtd / (double) totalQtd) * 100;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "PercentLanguages [linguagem=" + linguagem + ", porcentagem=" + porcentagem + ", qtd=" + qtd + "]";
+		return "PercentLanguages [linguagem=" + linguagem + ", porcentagem="
+				+ porcentagem + ", qtd=" + qtd + "]";
 	}
 
 	public String getLinguagem() {
@@ -51,11 +62,20 @@ public class PorcentagemLinguagens {
 		this.qtd = qtd;
 	}
 
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((linguagem == null) ? 0 : linguagem.hashCode());
+		result = prime * result
+				+ ((linguagem == null) ? 0 : linguagem.hashCode());
 		return result;
 	}
 

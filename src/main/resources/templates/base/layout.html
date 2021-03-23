@@ -1,32 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<meta name="description" content="#"/>
-	<meta name="author" content="GW"/>
- 
-    <title>Testes</title>
- 
-    <link  rel="stylesheet" th:href="@{/css/material.min.css}"/>
-    <link  rel="stylesheet" th:href="@{/css/sistema.css}"/>
- 
-    <script type="text/javascript" th:src="@{/js/material.min.js}"></script>
- 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
- 
+<meta charset="UTF-8">
+<title>GitWatchers</title>
+
 </head>
 <body>
- 
- 
-  <!-- PARTE QUE VAI SER SUBSTITUÍDA PELO CONTEUDO DAS PÁGINAS -->
-  <main class="mdl-layout__content mdl-color--blue-grey-100">
-    <div class="page-content">
- 
-    	 <!-- CONTEUDO A SER SUBSTITUÍDO -->
-    	  <div layout:fragment="content">Essa parte vai ser substituída </div>
-    </div>
-  </main>
- 
+
+	<div th:fragment="header">
+		<a href="/">Porcentagens</a> - <a href="/colaboracoes">Colaborações</a>
+	</div>
+
+	<!--  footer -->
+
 </body>
 </html>

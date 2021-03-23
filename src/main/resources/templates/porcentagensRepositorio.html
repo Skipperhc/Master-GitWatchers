@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
-<meta charset="UTF-8">
+<meta charset="ISO-8859-1">
 <title>GitWatchers</title>
 
 <link
@@ -19,25 +19,22 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 }
 </style>
+
 </head>
 <body>
-
-<div th:replace="base/layout :: header">
-	
-</div>
 
 	<br>
 	<div class="d-flex justify-content-center">
 		<form action="/index" method="get">
-			<label for="nome">Usuário: </label> <input name="user" />
-			<button type="submit">Buscar</button>
+			<label for="nome">Nome: </label> <input name="user" />
+			<button type="submit">Solicitar</button>
 		</form>
 	</div>
 
 	<br>
 
 	<span
-		th:text="${listaPorcentagens != null} ? ${listaPorcentagens[0].usuario} : ''"></span>
+		th:text="${listaPorcentagens != null} ? ${listaPorcentagens[0].usuario} : 'Nada aqui'"></span>
 
 	<div class="d-flex justify-content-center">
 		<table>
@@ -53,40 +50,16 @@ body {
 		</table>
 	</div>
 
-<!-- 	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
+	<!-- <script>
 
-	<div class="d-flex justify-content-center">
-		<form action="/index" method="get">
-			<div class="d-flex justify-content-center">
-				<label for="nome">Usuário: </label> <input name="user" />
-			</div>
-			<br>
-			<div class="d-flex justify-content-center">
-				<label for="repositorio">Repositório: </label> <input
-					name="nomeRepositorio" />
-			</div>
-			<br>
-			<button type="submit">Buscar</button>
-		</form>
-	</div>
-
-	<div class="d-flex justify-content-center">
-		<table>
-			<th:block th:each="colaboracao : ${listaColaboracoes}">
-				<tr>					
-					<td
-						th:text="' Usuário: ' + ${colaboracao?.usuario + ' &nbsp;'}">...</td>
-					<td th:text="' Commits:  ' +  ${colaboracao?.contribuicoes} + ' commit(s)'">...</td>
-				</tr>
-			</th:block>
-		</table>
-	</div> -->
+const ul = document.getElementById("list")
+response.data.forEach(element => {
+  let li = document.createElement("li");
+  li.appendChild(document.createTextNode(`Linguagem: ${element.linguagem}, Quantidade: ${element.qtd}`));
+  ul.appendChild(li);
+});
+</script>
+ -->
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
