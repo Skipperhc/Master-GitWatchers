@@ -1,9 +1,10 @@
 package com.pp5.apiWeb.models;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Repositorio {
-
 	private String donoRepos;
 	
 	@JsonProperty("language")
@@ -11,7 +12,9 @@ public class Repositorio {
 	
 	@JsonProperty("name")
 	private String nome;
-
+	
+	@JsonProperty("html_url")
+	private String url;
 	
 	public Repositorio() {
 		super();
@@ -30,6 +33,19 @@ public class Repositorio {
 		this.nome = nome;
 	}
 	
+	@JsonProperty("owner")
+	private void unpackLogin(Map<String, String> owner) {
+		donoRepos = owner.get("login");
+	}
+	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public String getDonoRepos() {
 		return donoRepos;
 	}

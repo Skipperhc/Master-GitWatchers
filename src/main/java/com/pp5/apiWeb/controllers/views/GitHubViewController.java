@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pp5.apiWeb.controllers.services.GitHubServiceController;
+import com.pp5.apiWeb.models.ListaPorcentagensRepositorios;
 import com.pp5.apiWeb.models.PorcentagemLinguagens;
 import com.pp5.apiWeb.models.UsuarioContribuicao;
 
@@ -22,10 +23,10 @@ public class GitHubViewController {
 		if (user != null) {
 			System.out.println("Ele chegou aqui e deu o seguinte item " + user);
 
-			List<PorcentagemLinguagens> listaPorcentagens = GitHubServiceController
+			ListaPorcentagensRepositorios listaPorcentagens_Repositorios = GitHubServiceController
 					.listarPorcentagens(user);
-			model.addObject("listaPorcentagens", listaPorcentagens);
-
+			model.addObject("listaPorcentagens", listaPorcentagens_Repositorios.getListaPorcentagens());
+			model.addObject("listaRepositorios", listaPorcentagens_Repositorios.getListaRepositorios());
 		} else
 			System.out.println("deu ruim");
 

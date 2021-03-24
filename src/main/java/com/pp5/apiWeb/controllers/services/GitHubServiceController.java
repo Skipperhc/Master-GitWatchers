@@ -9,10 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.HtmlUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -20,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.pp5.apiWeb.exceptions.CampoInvalidoException;
 import com.pp5.apiWeb.helpers.RetornoErroAPI;
 import com.pp5.apiWeb.models.ContribuicoesRepositorio;
+import com.pp5.apiWeb.models.ListaPorcentagensRepositorios;
 import com.pp5.apiWeb.models.PorcentagemLinguagens;
 import com.pp5.apiWeb.models.Repositorio;
 import com.pp5.apiWeb.models.UsuarioContribuicao;
@@ -29,7 +28,7 @@ import com.pp5.apiWeb.models.UsuarioContribuicao;
 public class GitHubServiceController {
 
 	@GetMapping("/{user}/porcentagens")
-	public static List<PorcentagemLinguagens> listarPorcentagens(@PathVariable String user) {
+	public static ListaPorcentagensRepositorios listarPorcentagens(@PathVariable String user) {
 
 		RestTemplate template = new RestTemplate();
 
@@ -39,51 +38,51 @@ public class GitHubServiceController {
 		ResponseEntity<Repositorio[]> response = template.getForEntity(uri.toUriString(), Repositorio[].class);
 		Repositorio[] listaRepositorioitorios = response.getBody();
 
+		ListaPorcentagensRepositorios listaPorcentagens_Repositorio = new ListaPorcentagensRepositorios();
 		List<Repositorio> repositorios = Arrays.asList(listaRepositorioitorios);
-
-		List<PorcentagemLinguagens> porcentagensLinguagem = new ArrayList<PorcentagemLinguagens>();
+		listaPorcentagens_Repositorio.setListaRepositorios(repositorios);
 
 		for (Repositorio repos : repositorios) {
 			if (repos.getLinguagem() == null) {
-				if (!porcentagensLinguagem.stream().anyMatch(x -> x.getLinguagem().equals("Sem linguagem"))) {
-					porcentagensLinguagem.add(new PorcentagemLinguagens("Sem linguagem", 1));
+				if (!listaPorcentagens_Repositorio.getListaPorcentagens().stream().anyMatch(x -> x.getLinguagem().equals("Sem linguagem"))) {
+					listaPorcentagens_Repositorio.getListaPorcentagens().add(new PorcentagemLinguagens("Sem linguagem", 1));
 				} else {
-					PorcentagemLinguagens percent = porcentagensLinguagem.stream()
+					PorcentagemLinguagens percent = listaPorcentagens_Repositorio.getListaPorcentagens().stream()
 							.filter(x -> x.getLinguagem().equals("Sem linguagem")).findFirst().orElse(null);
 					if (percent != null) {
 
-						int index = porcentagensLinguagem.indexOf(percent);
+						int index = listaPorcentagens_Repositorio.getListaPorcentagens().indexOf(percent);
 						percent.setQtd(percent.getQtd() + 1);
-						porcentagensLinguagem.set(index, percent);
+						listaPorcentagens_Repositorio.getListaPorcentagens().set(index, percent);
 					} else {
 						System.out.println("Erro ao encontrar repos null");
 					}
 				}
 
-			} else if (!porcentagensLinguagem.stream().anyMatch(x -> x.getLinguagem().equals(repos.getLinguagem()))) {
-				porcentagensLinguagem.add(new PorcentagemLinguagens(repos.getLinguagem(), user, 1));
+			} else if (!listaPorcentagens_Repositorio.getListaPorcentagens().stream().anyMatch(x -> x.getLinguagem().equals(repos.getLinguagem()))) {
+				listaPorcentagens_Repositorio.getListaPorcentagens().add(new PorcentagemLinguagens(repos.getLinguagem(), user, 1));
 			} else {
 
-				PorcentagemLinguagens percent = porcentagensLinguagem.stream()
+				PorcentagemLinguagens percent = listaPorcentagens_Repositorio.getListaPorcentagens().stream()
 
 						.filter(x -> x.getLinguagem().equals(repos.getLinguagem())).findFirst().orElse(null);
 				if (percent != null) {
 
-					int index = porcentagensLinguagem.indexOf(percent);
+					int index = listaPorcentagens_Repositorio.getListaPorcentagens().indexOf(percent);
 					percent.setQtd(percent.getQtd() + 1);
-					porcentagensLinguagem.set(index, percent);
+					listaPorcentagens_Repositorio.getListaPorcentagens().set(index, percent);
 				} else {
 					System.out.println("Erro ao encontrar repositorio");
 				}
 			}
 		}
 
-		for (PorcentagemLinguagens item : porcentagensLinguagem) {
+		for (PorcentagemLinguagens item : listaPorcentagens_Repositorio.getListaPorcentagens()) {
 			item.calcularPercent(repositorios.size());
 //			System.out.println(item.toString() + " qtd total: " + repositorios.size());
 		}
 
-		return porcentagensLinguagem;
+		return listaPorcentagens_Repositorio;
 	}
 
 	@GetMapping("/{user}/{linguagemRepos}/projetos")
@@ -93,11 +92,11 @@ public class GitHubServiceController {
 			RestTemplate template = new RestTemplate();
 
 			if (linguagemRepos == null || linguagemRepos == "") {
-				throw new CampoInvalidoException("Informe a linguagem do repositório.");
+				throw new CampoInvalidoException("Informe a linguagem do repositï¿½rio.");
 			}
 
 			if (user == null || user == "") {
-				throw new CampoInvalidoException("Informe o nome do usuario dono do repositório.");
+				throw new CampoInvalidoException("Informe o nome do usuario dono do repositï¿½rio.");
 			}
 
 			UriComponents uri = UriComponentsBuilder.newInstance().scheme("https").host("api.github.com")
@@ -107,7 +106,7 @@ public class GitHubServiceController {
 			Repositorio[] listaRepositorio = response.getBody();
 
 			if (listaRepositorio == null || listaRepositorio.length == 0)
-				throw new CampoInvalidoException("Nenhum repositorio foi encontrado para o usuário " + user + ".");
+				throw new CampoInvalidoException("Nenhum repositorio foi encontrado para o usuï¿½rio " + user + ".");
 
 			List<Repositorio> repositorios = Arrays.asList(listaRepositorio);
 
