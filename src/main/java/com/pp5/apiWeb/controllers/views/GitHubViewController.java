@@ -15,39 +15,36 @@ import com.pp5.apiWeb.models.UsuarioContribuicao;
 @Controller
 public class GitHubViewController {
 
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public ModelAndView showUserList(String user,
-			@Nullable String nomeRepositorio) {
-		ModelAndView model = new ModelAndView("index");
-		if (user != null) {
-			System.out.println("Ele chegou aqui e deu o seguinte item " + user);
-
-			List<PorcentagemLinguagens> listaPorcentagens = GitHubServiceController
-					.listarPorcentagens(user);
-			model.addObject("listaPorcentagens", listaPorcentagens);
-
-		} else
-			System.out.println("deu ruim");
-
-		return model;
-	}
-
-	@RequestMapping(value = "/colaboracoes", method = RequestMethod.GET)
-	public ModelAndView showColabs(String user, String nomeRepositorio) {
-		ModelAndView model = new ModelAndView("colaboracoes");
-		if (user != null) {
-			System.out.println("Ele chegou aqui e deu o seguinte item " + user);
-
-			if (nomeRepositorio != null | nomeRepositorio.equals("")) {
-				List<UsuarioContribuicao> listaColaboracoes = GitHubServiceController
-						.listarContribuicoes(user, nomeRepositorio);
-				model.addObject("listaColaboracoes", listaColaboracoes);
-			}
-
-		} else
-			System.out.println("deu ruim");
-
-		return model;
-	}
+	/*
+	 * @RequestMapping(value = "/index", method = RequestMethod.GET) public
+	 * ModelAndView showUserList(String user,
+	 * 
+	 * @Nullable String nomeRepositorio) { ModelAndView model = new
+	 * ModelAndView("index"); if (user != null) {
+	 * System.out.println("Ele chegou aqui e deu o seguinte item " + user);
+	 * 
+	 * List<PorcentagemLinguagens> listaPorcentagens = GitHubServiceController
+	 * .listarPorcentagens(user); model.addObject("listaPorcentagens",
+	 * listaPorcentagens);
+	 * 
+	 * } else System.out.println("deu ruim");
+	 * 
+	 * return model; }
+	 */
+	/*
+	 * @RequestMapping(value = "/colaboracoes", method = RequestMethod.GET)
+	 * public ModelAndView showColabs(String user, String nomeRepositorio) {
+	 * ModelAndView model = new ModelAndView("colaboracoes"); if (user != null)
+	 * { System.out.println("Ele chegou aqui e deu o seguinte item " + user);
+	 * 
+	 * if (nomeRepositorio != null | nomeRepositorio.equals("")) {
+	 * List<UsuarioContribuicao> listaColaboracoes = GitHubServiceController
+	 * .listarContribuicoes(user, nomeRepositorio);
+	 * model.addObject("listaColaboracoes", listaColaboracoes); }
+	 * 
+	 * } else System.out.println("deu ruim");
+	 * 
+	 * return model; }
+	 */
 
 }

@@ -1,96 +1,55 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>GitWatchers</title>
-
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
-	crossorigin="anonymous">
-
+<title>Page Title</title>
 <style>
 body {
-	background-color: black;
-	text-align: center;
-	color: white;
-	font-family: Arial, Helvetica, sans-serif;
+  background-color: black;
+  text-align: center;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>
 </head>
 <body>
+  <form >
+    <input type="text" id="name" name="user_name">
+    <button type="submit">Send your message</button>
+  </form>
+  
+  <p id="output"><p>
+  
+  <div id="data">
+      <ul id = "list">
+      </ul>
+    </div>
+  
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    const form = document.forms[0];
 
-<div th:replace="base/layout :: header">
-	
-</div>
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const { name } = this.elements;
+      // or
+      // const { name, description, task } = event.target.elements;
+      console.log(name.value);
 
-	<br>
-	<div class="d-flex justify-content-center">
-		<form action="/index" method="get">
-			<label for="nome">Usuário: </label> <input name="user" />
-			<button type="submit">Buscar</button>
-		</form>
-	</div>
-
-	<br>
-
-	<span
-		th:text="${listaPorcentagens != null} ? ${listaPorcentagens[0].usuario} : ''"></span>
-
-	<div class="d-flex justify-content-center">
-		<table>
-			<th:block th:each="porcentagem : ${listaPorcentagens}">
-				<tr>
-					<!-- 				<td th:text="${porcentagem}">...</td> -->
-					<td th:text="'Linguagem: ' + ${porcentagem?.linguagem + ' &nbsp;'}">...</td>
-					<td
-						th:text="' Quantidade de Repositorios: ' + ${porcentagem?.qtd + ' &nbsp;'}">...</td>
-					<td th:text="' Porcentagem: ' +  ${porcentagem?.porcentagem} + '%'">...</td>
-				</tr>
-			</th:block>
-		</table>
-	</div>
-
-<!-- 	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-
-	<div class="d-flex justify-content-center">
-		<form action="/index" method="get">
-			<div class="d-flex justify-content-center">
-				<label for="nome">Usuário: </label> <input name="user" />
-			</div>
-			<br>
-			<div class="d-flex justify-content-center">
-				<label for="repositorio">Repositório: </label> <input
-					name="nomeRepositorio" />
-			</div>
-			<br>
-			<button type="submit">Buscar</button>
-		</form>
-	</div>
-
-	<div class="d-flex justify-content-center">
-		<table>
-			<th:block th:each="colaboracao : ${listaColaboracoes}">
-				<tr>					
-					<td
-						th:text="' Usuário: ' + ${colaboracao?.usuario + ' &nbsp;'}">...</td>
-					<td th:text="' Commits:  ' +  ${colaboracao?.contribuicoes} + ' commit(s)'">...</td>
-				</tr>
-			</th:block>
-		</table>
-	</div> -->
-
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
-		crossorigin="anonymous"></script>
+      console.log(`http://localhost:8080/github/porcentagens/${name.value}`)
+      axios.get(`http://localhost:8080/github/porcentagens/${name.value}`)
+        .then(response => {
+        console.log(response);
+       /*  document.getElementById("output").innerHTML = JSON.stringify(response); */
+       const ul = document.getElementById("list")
+          response.data.forEach(element => {
+            let li = document.createElement("li");
+            li.appendChild(document.createTextNode(`Linguagem: ${element.linguagem}, Quantidade: ${element.qtd} , Porcentagem: ${element.porcentagem}`));
+            ul.appendChild(li);
+          });
+        /* window.open(JSON.stringify(response)); */
+      })
+        .catch(error => console.error(error));
+    });
+  </script>
 </body>
 </html>
