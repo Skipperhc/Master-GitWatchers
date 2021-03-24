@@ -174,6 +174,10 @@ public class GitHubServiceController {
 	 * return listaMensagem; }
 	 */
 
+	/*
+	 * @GetMapping("/colaboracoes") public String register() { return
+	 * "colaboracoes"; }
+	 */
 	@RequestMapping(value = "/colaboracoes", method = RequestMethod.GET)
 	public ModelAndView listarContribuicoes(
 			@RequestParam(value = "user", required = false) String user,
@@ -198,7 +202,7 @@ public class GitHubServiceController {
 			listaMensagem.add(new UsuarioContribuicao(cr.getUser(),
 					cr.getContribuicoes()));
 		}
-		model.addObject("listaColaboracoes", listaContribuicoes);
+		model.addObject("listaColaboracoes", listaMensagem);
 
 		return model;
 	}
