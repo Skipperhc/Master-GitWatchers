@@ -1,6 +1,8 @@
 package com.pp5.apiWeb.controllers.views;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -10,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.pp5.apiWeb.controllers.services.GitHubServiceController;
 import com.pp5.apiWeb.models.ListaPorcentagensRepositorios;
-import com.pp5.apiWeb.models.PorcentagemLinguagens;
 import com.pp5.apiWeb.models.UsuarioContribuicao;
 
 @Controller
@@ -27,12 +28,20 @@ public class GitHubViewController {
 					.listarPorcentagens(user);
 			model.addObject("listaPorcentagens", listaPorcentagens_Repositorios.getListaPorcentagens());
 			model.addObject("listaRepositorios", listaPorcentagens_Repositorios.getListaRepositorios());
+			
+			List<List<Object>> chartData = new ArrayList<List<Object>>();
+			
+			listaPorcentagens_Repositorios.getListaPorcentagens().forEach(item -> {
+				chartData.add(List.of(item.getLinguagem(), item.getQtd()));
+			});
+			
+			model.addObject("chartData", chartData);
 		} else
 			System.out.println("deu ruim");
 
 		return model;
 	}
-
+	
 	@RequestMapping(value = "/colaboracoes", method = RequestMethod.GET)
 	public ModelAndView showColabs(String user, String nomeRepositorio) {
 		ModelAndView model = new ModelAndView("colaboracoes");
