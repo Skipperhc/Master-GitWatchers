@@ -2,7 +2,6 @@ package com.pp5.apiWeb.controllers.views;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.pp5.apiWeb.controllers.services.GitHubServiceController;
 import com.pp5.apiWeb.models.ListaPorcentagensRepositorios;
-import com.pp5.apiWeb.models.UsuarioContribuicao;
 
 @Controller
 public class GitHubViewController {
@@ -45,18 +43,6 @@ public class GitHubViewController {
 	@RequestMapping(value = "/colaboracoes", method = RequestMethod.GET)
 	public ModelAndView showColabs(String user, String nomeRepositorio) {
 		ModelAndView model = new ModelAndView("colaboracoes");
-		if (user != null) {
-			System.out.println("Ele chegou aqui e deu o seguinte item " + user);
-
-			if (nomeRepositorio != null | nomeRepositorio.equals("")) {
-				List<UsuarioContribuicao> listaColaboracoes = GitHubServiceController
-						.listarContribuicoes(user, nomeRepositorio);
-				model.addObject("listaColaboracoes", listaColaboracoes);
-			}
-
-		} else
-			System.out.println("deu ruim");
-
 		return model;
 	}
 
