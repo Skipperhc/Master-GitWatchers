@@ -9,8 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.HtmlUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -137,24 +140,32 @@ public class GitHubServiceController {
 
 	// https://api.github.com/repos/nomeUsuario/nomeRepositorio/contributors
 
-	@GetMapping("/{user}/{nomeRepositorio}/contribuicoes")
-	public static List<UsuarioContribuicao> listarContribuicoes(@PathVariable String user,
-			@PathVariable String nomeRepositorio) {
+	@RequestMapping(value = "/colaboracoes", method = RequestMethod.GET)
+	public ModelAndView listarContribuicoes(
+			@RequestParam(value = "user", required = false) String user,
+			@RequestParam(value = "nomeRepositorio", required = false) String nomeRepositorio) {
 		RestTemplate template = new RestTemplate();
 
-		UriComponents uri = UriComponentsBuilder.newInstance().scheme("https").host("api.github.com")
-				.path("repos/" + user + "/" + nomeRepositorio + "/contributors").build();
+		ModelAndView model = new ModelAndView("colaboracoes");
 
-		ResponseEntity<ContribuicoesRepositorio[]> response = template.getForEntity(uri.toUriString(),
-				ContribuicoesRepositorio[].class);
+		UriComponents uri = UriComponentsBuilder.newInstance().scheme("https")
+				.host("api.github.com")
+				.path("repos/" + user + "/" + nomeRepositorio + "/contributors")
+				.build();
+
+		ResponseEntity<ContribuicoesRepositorio[]> response = template
+				.getForEntity(uri.toUriString(),
+						ContribuicoesRepositorio[].class);
 		ContribuicoesRepositorio[] listaContribuicoes = response.getBody();
 
 		List<UsuarioContribuicao> listaMensagem = new ArrayList<UsuarioContribuicao>();
 
 		for (ContribuicoesRepositorio cr : listaContribuicoes) {
-			listaMensagem.add(new UsuarioContribuicao(cr.getUser(), cr.getContribuicoes()));
+			listaMensagem.add(new UsuarioContribuicao(cr.getUser(),
+					cr.getContribuicoes()));
 		}
+		model.addObject("listaColaboracoes", listaMensagem);
 
-		return listaMensagem;
+		return model;
 	}
 }
