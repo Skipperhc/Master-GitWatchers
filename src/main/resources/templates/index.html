@@ -52,8 +52,8 @@ body {
             
             // Set chart options
             var options = {'title':'Porcentagem de repositorio por linguagens',
-                'width':400,
-                'height':300};
+                'width':700,
+                'height':500};
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -88,15 +88,14 @@ body {
 
 	<br>
 
-	<span
-		th:text="${listaPorcentagens != null} ? ${listaPorcentagens[0].usuario} : ''"></span>
+	<span th:text="${listaPorcentagens != null} ? ${listaPorcentagens[0].usuario} : ''"></span>
 
 
-	<div class="d-flex justify-content-center">
+<!-- 	<div class="d-flex justify-content-center">
 		<table>
 			<th:block th:each="porcentagem : ${listaPorcentagens}">
 				<tr>
-					<!-- 				<td th:text="${porcentagem}">...</td> -->
+									<td th:text="${porcentagem}">...</td>
 					<td th:text="'Linguagem: ' + ${porcentagem?.linguagem + ' &nbsp;'}">...</td>
 					<td
 						th:text="' Quantidade de Repositorios: ' + ${porcentagem?.qtd + ' &nbsp;'}">...</td>
@@ -104,7 +103,7 @@ body {
 				</tr>
 			</th:block>
 		</table>
-	</div>
+	</div> -->
 	
 <!-- 	<button class="btn btn-danger navbar-btn"
 		onclick="drawChart(new google.visualization.PieChart(document.getElementById('chart_div')))">Button</button>
