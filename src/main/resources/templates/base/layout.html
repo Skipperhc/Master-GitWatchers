@@ -8,10 +8,39 @@
 </head>
 <body>
 
-	<div th:fragment="header">
+	<!-- 	<div th:fragment="header">
 	
 		<a href="/">Porcentagens</a> - <a href="/colaboracoes">Colaborações</a>		
 		
+	</div> -->
+
+	<div th:fragment="navbar">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand">GitWatchers</a>
+			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav">
+					<li class="nav-item active"><a class="nav-link" href="/">Home</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="/colaboracoes">Colaborações</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="#">Em Breve...</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="#">Em Breve...</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="#">Em Breve...</a>
+					</li>
+				</ul>
+			</div>
+			<!--         <form class="form-inline" action="#" th:action="@{/plants}"  method="GET">
+            <datalist id="Plant_Search">
+                <option value="Oak">Quercus</option>
+                <option value="Maple">Acer</option>
+                <option value="Pine">Pinus</option>
+                <option value="Spruce">Abies</option>
+                <option value="Oak Leaved Hydrangea">Hydrangea</option>
+            </datalist>
+        </form> -->
+		</nav>
 	</div>
 
 	<!--  footer -->

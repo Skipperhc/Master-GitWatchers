@@ -22,41 +22,28 @@ body {
 </head>
 <body>
 
-	<div th:replace="base/layout :: header"></div>
+	<div th:replace="base/layout :: navbar"></div>
 
 	<br>
-
-	<!-- 		<div class="d-flex justify-content-center">
-			<form action="/colaboracoes" method="get">
-				<div class="d-flex justify-content-center">
-					<label for="nome">Usuário: </label> <input name="user" />
-				</div>
-				<br>
-				<div class="d-flex justify-content-center">
-					<label for="repositorio">Repositório: </label> <input
-						name="nomeRepositorio" />
-				</div>
-				<br>
-				<button type="submit">Buscar</button>
-			</form>
-		</div> -->
-
 
 	<br>
 	<div class="d-flex justify-content-center">
+
 		<form th:action="@{github/colaboracoes}" method="get">
-			<div class="d-flex justify-content-center">
-				<label for="nome">Usuário: </label> &nbsp;<input name="user" />
+			<div class="row form-group">
+				<label for="nome">Usuário</label><input name="user" class="form-control"/>
+			</div>
+
+			<br>
+			<div class="row form-group">
+				<label for="repositorio">Repositório</label><input
+					name="nomeRepositorio" class="form-control" />
 			</div>
 			<br>
-			<div class="d-flex justify-content-center">
-				<label for="repositorio">Repositório: </label> &nbsp;<input
-					name="nomeRepositorio" />
-			</div>
-			<br>
-			<button type="submit">Buscar</button>
+			<button class="btn btn-success" type="submit">Buscar</button>
 		</form>
 	</div>
+
 
 	<br>
 

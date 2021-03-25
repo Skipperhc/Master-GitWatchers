@@ -64,13 +64,25 @@ body {
 </head>
 <body th:erroFuncao="${errorMessage}" th:onload="SweetAlertErro()">
 
-	<div th:replace="base/layout :: header"></div>
+
+	<div th:replace="base/layout :: navbar"></div>
 
 	<br>
 	<div class="d-flex justify-content-center">
 		<form action="/index" method="get">
-			<label for="nome">Usuário: </label> <input name="user" />
-			<button type="submit">Buscar</button>
+			<div class="row form-group">
+				<label for="nome">Usuário</label> <input name="user"
+					class="form-control" />
+			</div>
+
+			<br>
+
+			<div class="row form-group">
+				<div>
+					<button type="submit" class="btn btn-success">Buscar</button>
+				</div>
+			</div>
+
 		</form>
 	</div>
 
