@@ -1,5 +1,9 @@
 package com.pp5.apiWeb.models;
 
+import java.text.DecimalFormat;
+
+import com.pp5.apiWeb.helpers.Numbers;
+
 public class PorcentagemLinguagens {
 
 	private String linguagem;
@@ -30,6 +34,8 @@ public class PorcentagemLinguagens {
 
 	public void calcularPercent(int totalQtd) {
 		porcentagem = ((double) qtd / (double) totalQtd) * 100;
+		      
+		porcentagem = Numbers.ArredondarCasasDecimais(porcentagem, 1);
 	}
 
 	@Override

@@ -39,6 +39,12 @@ public class GitHubServiceController {
 				.path("users/" + user + "/repos").build();
 
 		ResponseEntity<Repositorio[]> response = template.getForEntity(uri.toUriString(), Repositorio[].class);
+		
+		if(response.getStatusCode() != HttpStatus.OK)
+		{
+			throw new RuntimeException("Usuario não encontrado no github.");
+		}
+		
 		Repositorio[] listaRepositorioitorios = response.getBody();
 
 		ListaPorcentagensRepositorios listaPorcentagens_Repositorio = new ListaPorcentagensRepositorios();
@@ -106,6 +112,12 @@ public class GitHubServiceController {
 					.path("users/" + user + "/repos").build();
 
 			ResponseEntity<Repositorio[]> response = template.getForEntity(uri.toUriString(), Repositorio[].class);
+			
+			if(response.getStatusCode() != HttpStatus.OK)
+			{
+				throw new RuntimeException("Repositórios não encontrado no github.");
+			}
+			
 			Repositorio[] listaRepositorio = response.getBody();
 
 			if (listaRepositorio == null || listaRepositorio.length == 0)
@@ -142,8 +154,8 @@ public class GitHubServiceController {
 
 	@RequestMapping(value = "/colaboracoes", method = RequestMethod.GET)
 	public ModelAndView listarContribuicoes(
-			@RequestParam(value = "user", required = false) String user,
-			@RequestParam(value = "nomeRepositorio", required = false) String nomeRepositorio) {
+			@RequestParam(value = "user", required = true) String user,
+			@RequestParam(value = "nomeRepositorio", required = true) String nomeRepositorio) {
 		RestTemplate template = new RestTemplate();
 
 		ModelAndView model = new ModelAndView("colaboracoes");
@@ -156,6 +168,12 @@ public class GitHubServiceController {
 		ResponseEntity<ContribuicoesRepositorio[]> response = template
 				.getForEntity(uri.toUriString(),
 						ContribuicoesRepositorio[].class);
+		
+		if(response.getStatusCode() != HttpStatus.OK)
+		{
+			throw new RuntimeException("Colaboracoes não encontrado no github.");
+		}
+		
 		ContribuicoesRepositorio[] listaContribuicoes = response.getBody();
 
 		List<UsuarioContribuicao> listaMensagem = new ArrayList<UsuarioContribuicao>();
