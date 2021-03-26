@@ -95,8 +95,7 @@ public class GitHubServiceController {
 	}
 
 	@GetMapping("/{user}/{linguagemRepos}/projetos")
-	public ResponseEntity listarRepositoriosPorLinguagem(@PathVariable String user,
-			@PathVariable String linguagemRepos) {
+	public ResponseEntity listarRepositoriosPorLinguagem(@PathVariable String user,	@PathVariable String linguagemRepos) {
 		try {
 			RestTemplate template = new RestTemplate();
 

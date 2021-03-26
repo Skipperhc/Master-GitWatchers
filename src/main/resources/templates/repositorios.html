@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GitWatchers - Repositorios</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <style>
+        body {
+            background-color: white;
+            text-align: center;
+            color: black;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+
+<body th:erroFuncao="${errorMessage}" th:onload="SweetAlertErro()">
+
+    <div th:replace="base/layout :: navbar"></div>
+
+    <br>
+
+    <br>
+    <div class="d-flex justify-content-center">
+
+        <form action="/repositoriosPorLinguagem" method="get">
+            <div class="row form-group">
+                <label for="nome">Usuário</label>
+                <input name="user" class="form-control" />
+            </div>
+
+            <br>
+            <div class="row form-group">
+                <label for="linguagem">Linguagem</label>
+                <input name="linguagem" class="form-control" />
+            </div>
+            <br>
+            <button class="btn btn-success" type="submit">Buscar</button>
+        </form>
+    </div>
+
+    <br>   
+
+    <!-- repositorios -->
+    <div class="d-flex justify-content-center">
+        <table>
+            <th:block th:each="Repositorio : ${repositorios}">
+                <tr>
+                    <td th:text="' Usuário: ' + ${Repositorio?.nome}">...</td>
+                    <td th:text="' Linguagem:  ' +  ${Repositorio?.linguagem}">...</td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        function isEmpty(str) {
+            return (!str || 0 === str.length);
+        }
+
+        function SweetAlertErro() {
+            var erro = document.querySelectorAll('body')[0].getAttribute('erroFuncao');
+
+            if (isEmpty(erro) == false) {
+                swal({
+                    title: 'Atenção',
+                    text: erro,
+                    icon: "error",
+                    dangerMode: false,
+                });
+            }
+        }
+
+        function SweetAlertSucesso(titulo, textoConteudo) {
+            swal({
+                title: titulo,
+                text: textoConteudo,
+                icon: "success",
+                dangerMode: false,
+            });
+        }
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
