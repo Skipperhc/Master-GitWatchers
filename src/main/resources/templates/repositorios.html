@@ -18,7 +18,7 @@
     </style>
 </head>
 
-<body th:erroFuncao="${errorMessage}" th:onload="SweetAlertErro()">
+<body th:erroFuncao="${errorMessage}" th:onload="SweetAlertErro()" l>
 
     <div th:replace="base/layout :: navbar"></div>
 
@@ -26,11 +26,10 @@
 
     <br>
     <div class="d-flex justify-content-center">
-
         <form action="/repositoriosPorLinguagem" method="get">
             <div class="row form-group">
                 <label for="nome">Usuário</label>
-                <input name="user" class="form-control" />
+                <input name="user" th:id="${txtUser}" class="form-control" />
             </div>
 
             <br>
@@ -43,19 +42,47 @@
         </form>
     </div>
 
-    <br>   
+    <br>
 
     <!-- repositorios -->
     <div class="d-flex justify-content-center">
         <table>
             <th:block th:each="Repositorio : ${repositorios}">
                 <tr>
-                    <td th:text="' Usuário: ' + ${Repositorio?.nome}">...</td>
-                    <td th:text="' Linguagem:  ' +  ${Repositorio?.linguagem}">...</td>
+                    <td><a th:href="@{'/colaboracoes?user=' + ${Repositorio?.donoRepos}+'&nomeRepositorio='+${Repositorio?.nome}}"
+                            th:text="${Repositorio?.nome}" /></td>
                 </tr>
             </th:block>
         </table>
     </div>
+
+    <script type="text/javascript">
+
+        window.onload = (event) => {
+            var user = getParameterByName('user');
+            var nomeRepositorio = getParameterByName('nomeRepositorio');
+
+            document.getElementById(user).innerText = user;
+            document.getElementById(nomeRepos).innerText = nomeRepositorio;
+        };
+
+
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+
+            if (!results)
+                return null;
+
+            if (!results[2])
+                return '';
+
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
