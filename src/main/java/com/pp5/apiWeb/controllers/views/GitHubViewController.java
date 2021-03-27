@@ -53,10 +53,20 @@ public class GitHubViewController {
 	}
 
 	@RequestMapping(value = "/colaboracoes", method = RequestMethod.GET)
-    public ModelAndView showColabs(String user, String nomeRepositorio) {
+    public ModelAndView showColabsHTML(String user, String nomeRepositorio) {
         ModelAndView model = new ModelAndView("colaboracoes");
         return model;
     }
+
+	@RequestMapping(value = "/colaboracoesPorUsuario", method = RequestMethod.GET)
+	public ModelAndView showColabs(
+		@RequestParam(value = "user", required = false) String user,
+		@RequestParam(value = "nomeRepositorio", required = false) String nomeRepositorio)  
+	{
+		useCaseGitHub useCaseGithub = new useCaseGitHub();
+
+		return useCaseGithub.MontarViewColaboracoes(user, nomeRepositorio);
+	}
 
 	@RequestMapping(value = "/repositorios", method = RequestMethod.GET)
 	public ModelAndView showReposHTML()  

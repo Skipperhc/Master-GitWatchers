@@ -5,7 +5,9 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pp5.apiWeb.controllers.services.GitHubServiceController;
 import com.pp5.apiWeb.exceptions.CampoInvalidoException;
+import com.pp5.apiWeb.models.ContribuicoesRepositorio;
 import com.pp5.apiWeb.models.Repositorio;
+import com.pp5.apiWeb.models.UsuarioContribuicao;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,45 @@ public class useCaseGitHub {
             List<Repositorio> repos = (List<Repositorio>)response.getBody();
 			
             model.addObject("repositorios", repos);
+		} 
+		catch (CampoInvalidoException e) {
+			model.addObject("errorMessage", e.getMessage());
+		}
+		catch (RestClientException e) {
+			model.addObject("errorMessage", "Usuário não encontrado");
+		} 
+		catch (Exception e) {
+			model.addObject("errorMessage", e.getMessage());
+		}
+
+		return model;
+    }
+
+    public ModelAndView MontarViewColaboracoes(String user, String nomeRepositorio){
+        ModelAndView model = new ModelAndView("colaboracoes");
+
+        try 
+        {
+			if(user == "" || user == null)
+            {
+                throw new CampoInvalidoException("Informe o usuário.");
+			}
+
+            if(nomeRepositorio == "" || nomeRepositorio == null)
+            {
+                throw new CampoInvalidoException("Informe o nome do repositorio.");
+			}
+
+            ResponseEntity response = new GitHubServiceController().listarContribuicoes(user, nomeRepositorio);
+
+            if(response.getStatusCode() != HttpStatus.OK)
+            {
+                throw new Exception(response.getBody().toString());
+            }
+
+            List<UsuarioContribuicao> repos = (List<UsuarioContribuicao>)response.getBody();
+			
+            model.addObject("listaColaboracoes", repos);
 		} 
 		catch (CampoInvalidoException e) {
 			model.addObject("errorMessage", e.getMessage());
