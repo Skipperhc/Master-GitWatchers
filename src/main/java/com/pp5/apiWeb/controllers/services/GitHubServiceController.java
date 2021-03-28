@@ -39,12 +39,11 @@ public class GitHubServiceController {
 				.path("users/" + user + "/repos").build();
 
 		ResponseEntity<Repositorio[]> response = template.getForEntity(uri.toUriString(), Repositorio[].class);
-		
-		if(response.getStatusCode() != HttpStatus.OK)
-		{
+
+		if (response.getStatusCode() != HttpStatus.OK) {
 			throw new RuntimeException("Usuario não encontrado no github.");
 		}
-		
+
 		Repositorio[] listaRepositorioitorios = response.getBody();
 
 		ListaPorcentagensRepositorios listaPorcentagens_Repositorio = new ListaPorcentagensRepositorios();
@@ -53,8 +52,10 @@ public class GitHubServiceController {
 
 		for (Repositorio repos : repositorios) {
 			if (repos.getLinguagem() == null) {
-				if (!listaPorcentagens_Repositorio.getListaPorcentagens().stream().anyMatch(x -> x.getLinguagem().equals("Sem linguagem"))) {
-					listaPorcentagens_Repositorio.getListaPorcentagens().add(new PorcentagemLinguagens("Sem linguagem", 1));
+				if (!listaPorcentagens_Repositorio.getListaPorcentagens().stream()
+						.anyMatch(x -> x.getLinguagem().equals("Sem linguagem"))) {
+					listaPorcentagens_Repositorio.getListaPorcentagens()
+							.add(new PorcentagemLinguagens("Sem linguagem", 1));
 				} else {
 					PorcentagemLinguagens percent = listaPorcentagens_Repositorio.getListaPorcentagens().stream()
 							.filter(x -> x.getLinguagem().equals("Sem linguagem")).findFirst().orElse(null);
@@ -68,8 +69,10 @@ public class GitHubServiceController {
 					}
 				}
 
-			} else if (!listaPorcentagens_Repositorio.getListaPorcentagens().stream().anyMatch(x -> x.getLinguagem().equals(repos.getLinguagem()))) {
-				listaPorcentagens_Repositorio.getListaPorcentagens().add(new PorcentagemLinguagens(repos.getLinguagem(), user, 1));
+			} else if (!listaPorcentagens_Repositorio.getListaPorcentagens().stream()
+					.anyMatch(x -> x.getLinguagem().equals(repos.getLinguagem()))) {
+				listaPorcentagens_Repositorio.getListaPorcentagens()
+						.add(new PorcentagemLinguagens(repos.getLinguagem(), user, 1));
 			} else {
 
 				PorcentagemLinguagens percent = listaPorcentagens_Repositorio.getListaPorcentagens().stream()
@@ -88,39 +91,39 @@ public class GitHubServiceController {
 
 		for (PorcentagemLinguagens item : listaPorcentagens_Repositorio.getListaPorcentagens()) {
 			item.calcularPercent(repositorios.size());
-//			System.out.println(item.toString() + " qtd total: " + repositorios.size());
+			// System.out.println(item.toString() + " qtd total: " + repositorios.size());
 		}
 
 		return listaPorcentagens_Repositorio;
 	}
 
 	@GetMapping("/{user}/{linguagemRepos}/projetos")
-	public ResponseEntity listarRepositoriosPorLinguagem(@PathVariable String user,	@PathVariable String linguagemRepos) {
+	public ResponseEntity listarRepositoriosPorLinguagem(@PathVariable String user,
+			@PathVariable String linguagemRepos) {
 		try {
 			RestTemplate template = new RestTemplate();
 
 			if (linguagemRepos == null || linguagemRepos == "") {
-				throw new CampoInvalidoException("Informe a linguagem do reposit�rio.");
+				throw new CampoInvalidoException("Informe a linguagem do repositório.");
 			}
 
 			if (user == null || user == "") {
-				throw new CampoInvalidoException("Informe o nome do usuario dono do reposit�rio.");
+				throw new CampoInvalidoException("Informe o nome do usuario dono do repositório.");
 			}
 
 			UriComponents uri = UriComponentsBuilder.newInstance().scheme("https").host("api.github.com")
 					.path("users/" + user + "/repos").build();
 
 			ResponseEntity<Repositorio[]> response = template.getForEntity(uri.toUriString(), Repositorio[].class);
-			
-			if(response.getStatusCode() != HttpStatus.OK)
-			{
+
+			if (response.getStatusCode() != HttpStatus.OK) {
 				throw new RuntimeException("Repositórios não encontrado no github.");
 			}
-			
+
 			Repositorio[] listaRepositorio = response.getBody();
 
 			if (listaRepositorio == null || listaRepositorio.length == 0)
-				throw new CampoInvalidoException("Nenhum repositorio foi encontrado para o usu�rio " + user + ".");
+				throw new CampoInvalidoException("Nenhum repositorio foi encontrado para o usuário " + user + ".");
 
 			List<Repositorio> repositorios = Arrays.asList(listaRepositorio);
 
@@ -130,8 +133,10 @@ public class GitHubServiceController {
 
 			for (Repositorio repos : repositorios) {
 
-				if (repos.getLinguagem().toUpperCase().equals(linguagemDecodificada.toUpperCase())) {
-					reposFiltrado.add(repos);
+				if (repos.getLinguagem() != null && repos.getLinguagem() != "") {
+					if (repos.getLinguagem().toUpperCase().equals(linguagemDecodificada.toUpperCase())) {
+						reposFiltrado.add(repos);
+					}
 				}
 			}
 
@@ -149,40 +154,77 @@ public class GitHubServiceController {
 		}
 	}
 
+	@RequestMapping(value = "/{user}/{nomeRepositorio}/colaboracoes")
+	public ResponseEntity listarContribuicoes(@PathVariable String user, @PathVariable String nomeRepositorio) {
+		try {
+
+			RestTemplate template = new RestTemplate();
+
+			UriComponents uri = UriComponentsBuilder.newInstance().scheme("https").host("api.github.com")
+					.path("repos/" + user + "/" + nomeRepositorio + "/contributors").build();
+
+			ResponseEntity<ContribuicoesRepositorio[]> response = template.getForEntity(uri.toUriString(),
+					ContribuicoesRepositorio[].class);
+
+			if (response.getStatusCode() != HttpStatus.OK) {
+				throw new RuntimeException("Colaborações não encontradas no github.");
+			}
+
+			ContribuicoesRepositorio[] listaContribuicoes = response.getBody();
+
+			List<UsuarioContribuicao> listaMensagem = new ArrayList<UsuarioContribuicao>();
+
+			for (ContribuicoesRepositorio cr : listaContribuicoes) {
+				listaMensagem.add(new UsuarioContribuicao(cr.getUser(), cr.getContribuicoes()));
+			}
+
+			return ResponseEntity.status(HttpStatus.OK).body(listaMensagem);
+
+		} catch (CampoInvalidoException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RetornoErroAPI(-1, e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RetornoErroAPI(-4, e.getMessage()));
+		}
+
+	}
+
 	// https://api.github.com/repos/nomeUsuario/nomeRepositorio/contributors
 
-	@RequestMapping(value = "/colaboracoes", method = RequestMethod.GET)
-	public ModelAndView listarContribuicoes(
-			@RequestParam(value = "user", required = true) String user,
-			@RequestParam(value = "nomeRepositorio", required = true) String nomeRepositorio) {
-		RestTemplate template = new RestTemplate();
+	// @RequestMapping(value = "/colaboracoes", method = RequestMethod.GET)
+	// public ModelAndView listarContribuicoes(
+	// @RequestParam(value = "user", required = true) String user,
+	// @RequestParam(value = "nomeRepositorio", required = true) String
+	// nomeRepositorio) {
+	// RestTemplate template = new RestTemplate();
 
-		ModelAndView model = new ModelAndView("colaboracoes");
+	// ModelAndView model = new ModelAndView("colaboracoes");
 
-		UriComponents uri = UriComponentsBuilder.newInstance().scheme("https")
-				.host("api.github.com")
-				.path("repos/" + user + "/" + nomeRepositorio + "/contributors")
-				.build();
+	// UriComponents uri = UriComponentsBuilder.newInstance().scheme("https")
+	// .host("api.github.com")
+	// .path("repos/" + user + "/" + nomeRepositorio + "/contributors")
+	// .build();
 
-		ResponseEntity<ContribuicoesRepositorio[]> response = template
-				.getForEntity(uri.toUriString(),
-						ContribuicoesRepositorio[].class);
-		
-		if(response.getStatusCode() != HttpStatus.OK)
-		{
-			throw new RuntimeException("Colaboracoes não encontrado no github.");
-		}
-		
-		ContribuicoesRepositorio[] listaContribuicoes = response.getBody();
+	// ResponseEntity<ContribuicoesRepositorio[]> response = template
+	// .getForEntity(uri.toUriString(),
+	// ContribuicoesRepositorio[].class);
 
-		List<UsuarioContribuicao> listaMensagem = new ArrayList<UsuarioContribuicao>();
+	// if(response.getStatusCode() != HttpStatus.OK)
+	// {
+	// throw new RuntimeException("Colaboracoes não encontrado no github.");
+	// }
 
-		for (ContribuicoesRepositorio cr : listaContribuicoes) {
-			listaMensagem.add(new UsuarioContribuicao(cr.getUser(),
-					cr.getContribuicoes()));
-		}
-		model.addObject("listaColaboracoes", listaMensagem);
+	// ContribuicoesRepositorio[] listaContribuicoes = response.getBody();
 
-		return model;
-	}
+	// List<UsuarioContribuicao> listaMensagem = new
+	// ArrayList<UsuarioContribuicao>();
+
+	// for (ContribuicoesRepositorio cr : listaContribuicoes) {
+	// listaMensagem.add(new UsuarioContribuicao(cr.getUser(),
+	// cr.getContribuicoes()));
+	// }
+	// model.addObject("listaColaboracoes", listaMensagem);
+
+	// return model;
+	// }
+
 }

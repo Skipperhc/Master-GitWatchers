@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>GitWatchers</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
@@ -19,8 +20,10 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 }
 </style>
+
+
 </head>
-<body>
+<body th:erroFuncao="${errorMessage}" th:onload="SweetAlertErro()">
 
 	<div th:replace="base/layout :: navbar"></div>
 
@@ -29,7 +32,7 @@ body {
 	<br>
 	<div class="d-flex justify-content-center">
 
-		<form th:action="@{github/colaboracoes}" method="get">
+		<form action="/colaboracoesPorUsuario" method="get">
 			<div class="row form-group">
 				<label for="nome">Usuário</label><input name="user" class="form-control"/>
 			</div>
@@ -52,13 +55,47 @@ body {
 		<table>
 			<th:block th:each="colaboracao : ${listaColaboracoes}">
 				<tr>
-					<td th:text="' Usuário: ' + ${colaboracao?.usuario + ' &nbsp;'}">...</td>
+					<td th:text="' Usuário: ' + ${colaboracao?.usuario}">...</td>
 					<td
-						th:text="' Commits:  ' +  ${colaboracao?.contribuicoes} + ' commit(s)'">...</td>
+						th:text="' Commits:  ' +  ${colaboracao?.contribuicoes}">...</td>
 				</tr>
 			</th:block>
 		</table>
 	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+	integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+	crossorigin="anonymous"></script>
+
+
+	<script type="text/javascript">
+        function isEmpty(str) {
+            return (!str || 0 === str.length);
+        }
+
+        function SweetAlertErro() {
+            var erro = document.querySelectorAll('body')[0].getAttribute('erroFuncao');
+
+            if (isEmpty(erro) == false) {
+                swal({
+                    title: 'Atenção',
+                    text: erro,
+                    icon: "error",
+                    dangerMode: false,
+                });
+            }
+        }
+
+        function SweetAlertSucesso(titulo, textoConteudo) {
+            swal({
+                title: titulo,
+                text: textoConteudo,
+                icon: "success",
+                dangerMode: false,
+            });
+        }
+
+    </script>
 
 
 	<script
