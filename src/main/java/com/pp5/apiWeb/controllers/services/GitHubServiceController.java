@@ -104,11 +104,11 @@ public class GitHubServiceController {
 			RestTemplate template = new RestTemplate();
 
 			if (linguagemRepos == null || linguagemRepos == "") {
-				throw new CampoInvalidoException("Informe a linguagem do reposit�rio.");
+				throw new CampoInvalidoException("Informe a linguagem do repositório.");
 			}
 
 			if (user == null || user == "") {
-				throw new CampoInvalidoException("Informe o nome do usuario dono do reposit�rio.");
+				throw new CampoInvalidoException("Informe o nome do usuario dono do repositório.");
 			}
 
 			UriComponents uri = UriComponentsBuilder.newInstance().scheme("https").host("api.github.com")
@@ -123,7 +123,7 @@ public class GitHubServiceController {
 			Repositorio[] listaRepositorio = response.getBody();
 
 			if (listaRepositorio == null || listaRepositorio.length == 0)
-				throw new CampoInvalidoException("Nenhum repositorio foi encontrado para o usu�rio " + user + ".");
+				throw new CampoInvalidoException("Nenhum repositorio foi encontrado para o usuário " + user + ".");
 
 			List<Repositorio> repositorios = Arrays.asList(listaRepositorio);
 
@@ -133,8 +133,10 @@ public class GitHubServiceController {
 
 			for (Repositorio repos : repositorios) {
 
-				if (repos.getLinguagem().toUpperCase().equals(linguagemDecodificada.toUpperCase())) {
-					reposFiltrado.add(repos);
+				if (repos.getLinguagem() != null && repos.getLinguagem() != "") {
+					if (repos.getLinguagem().toUpperCase().equals(linguagemDecodificada.toUpperCase())) {
+						reposFiltrado.add(repos);
+					}
 				}
 			}
 
@@ -153,8 +155,7 @@ public class GitHubServiceController {
 	}
 
 	@RequestMapping(value = "/{user}/{nomeRepositorio}/colaboracoes")
-	public ResponseEntity listarContribuicoes(@PathVariable String user,
-	@PathVariable String nomeRepositorio) {
+	public ResponseEntity listarContribuicoes(@PathVariable String user, @PathVariable String nomeRepositorio) {
 		try {
 
 			RestTemplate template = new RestTemplate();
@@ -166,7 +167,7 @@ public class GitHubServiceController {
 					ContribuicoesRepositorio[].class);
 
 			if (response.getStatusCode() != HttpStatus.OK) {
-				throw new RuntimeException("Colaboracoes não encontradas no github.");
+				throw new RuntimeException("Colaborações não encontradas no github.");
 			}
 
 			ContribuicoesRepositorio[] listaContribuicoes = response.getBody();
