@@ -22,6 +22,48 @@ body {
 </style>
 
 
+<script src="https://www.google.com/jsapi"></script>
+
+<script type="text/javascript" th:inline="javascript"> 
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+
+            // Create the data table.
+/*             var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Topping');
+            data.addColumn('number', 'Slices');
+            data.addRows([[${chartData}]]); 
+*/
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Topping');
+            data.addColumn('number', 'Slices');
+            data.addRows([
+                /*[# th:each="row : ${chartData}"]*/
+                [[${row}]],
+                /*[/]*/
+            ]);
+            
+            // Set chart options
+            var options = {'title':'Quantidade e porcentagem de commits por usuário no projeto',
+                'width':700,
+                'height':500};
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+
+
 </head>
 <body th:erroFuncao="${errorMessage}" th:onload="SweetAlertErro()">
 
@@ -62,6 +104,11 @@ body {
 			</th:block>
 		</table>
 	</div>
+
+	<div class="d-flex justify-content-center">
+		<div id="chart_div" style="margin-left: 23px;"></div>
+	</div>
+
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
 	integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="

@@ -1,5 +1,6 @@
 package com.pp5.apiWeb.controllers.useCases;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,6 +83,14 @@ public class useCaseGitHub {
             List<UsuarioContribuicao> repos = (List<UsuarioContribuicao>)response.getBody();
 			
             model.addObject("listaColaboracoes", repos);
+
+            List<List<Object>> chartData = new ArrayList<List<Object>>();
+
+            repos.forEach(item -> {
+                chartData.add(List.of(item.getUsuario(), item.getContribuicoes()));
+            });
+
+            model.addObject("chartData", chartData);
 		} 
 		catch (CampoInvalidoException e) {
 			model.addObject("errorMessage", e.getMessage());
