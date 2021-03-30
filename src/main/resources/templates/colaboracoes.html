@@ -53,12 +53,12 @@ body {
             ]);
             
             // Set chart options
-            var options = {'title':'Quantidade e porcentagem de commits por usuário no projeto',
+            var options = {'title':'Quantidade de commits por usuário no projeto',
                 'width':700,
                 'height':500};
 
             // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
             chart.draw(data, options);
         }
     </script>
