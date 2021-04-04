@@ -84,4 +84,22 @@ public class GitHubViewController {
 
 		return useCaseGithub.MontarViewRepositorio(user, linguagem);
 	}
+	
+	@RequestMapping(value = "/detalhesrepositorios", method = RequestMethod.GET)
+	public ModelAndView showReposDetails(
+		@RequestParam(value = "user", required = false) String user,
+		@RequestParam(value = "repositorio", required = false) String repositorio)  
+	{
+		useCaseGitHub useCaseGithub = new useCaseGitHub();
+
+		return useCaseGithub.montarViewReposDetails(user, repositorio);
+	}
+	
+	@RequestMapping(value = "/teste", method = RequestMethod.GET)
+	public ModelAndView showReposDetails()  
+	{
+		useCaseGitHub useCaseGithub = new useCaseGitHub();
+
+		return useCaseGithub.viewTeste();
+	}
 }
