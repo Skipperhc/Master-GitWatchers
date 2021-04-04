@@ -16,7 +16,7 @@
 	</div> -->
 
 	<div th:fragment="navbar">
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<a class="navbar-brand" style="margin-left: 20px;">GitWatchers</a>
 			<div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavDropdown">
 				<ul class="navbar-nav">
@@ -32,16 +32,77 @@
 					</li>
 				</ul>
 			</div>
-			<!--         <form class="form-inline" action="#" th:action="@{/plants}"  method="GET">
-            <datalist id="Plant_Search">
-                <option value="Oak">Quercus</option>
-                <option value="Maple">Acer</option>
-                <option value="Pine">Pinus</option>
-                <option value="Spruce">Abies</option>
-                <option value="Oak Leaved Hydrangea">Hydrangea</option>
-            </datalist>
-        </form> -->
-		</nav>
+		</nav> -->
+		<div class="wrapper">
+			<!-- Sidebar Holder -->
+			<nav id="sidebar">
+				<div class="sidebar-header">
+					<h3>GitWatchers</h3>
+				</div>
+				<ul class="list-unstyled components">
+					<li>
+						<a href="/">Home</a>
+					</li>
+	
+					<li class="active">
+						<a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Páginas</a>
+						<ul class="collapse list-unstyled" id="homeSubmenu">
+							<li>
+								<a href="/">Home</a>
+							</li>
+							<li>
+								<a href="/colaboracoes">Colaborações</a>
+							</li>
+							<li>
+								<a href="/repositorios">Repositorios</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Github</a>
+					</li>
+				</ul>
+			</nav>
+	
+			<!-- Page Content Holder -->
+			<div id="content">
+	
+				<nav class="navbar navbar-expand-lg navbar-light bg-light">
+					<div class="container-fluid">
+	
+						<button type="button" id="sidebarCollapse" class="navbar-btn">
+							<span></span>
+							<span></span>
+							<span></span>
+						</button>
+						<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<i class="fas fa-align-justify"></i>
+						</button>
+	
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="nav navbar-nav ml-auto">
+								<li class="nav-item active">
+									<a class="nav-link" href="/">Inicio</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#">Em breve...</a>
+								</li>
+	
+							</ul>
+						</div>
+					</div>
+				</nav>
+
+				<!-- conteudo -->
+				<div class="page-content">
+ 
+					<!-- CONTEUDO A SER SUBSTITUÍDO -->
+					 <div layout:fragment="content">Essa parte vai ser substituída </div>
+			   </div>
+
+			</div>
+		</div>
+	
 	</div>
 
 	<!--  footer -->
