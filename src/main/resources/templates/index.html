@@ -52,14 +52,33 @@ body {
             ]);
             
             // Set chart options
-            var options = {'title':'Porcentagem de repositorio por linguagens',
+            var options = {'title':'Porcentagem de repositorios por linguagem e usuário',
                 'width':700,
                 'height':500};
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
             chart.draw(data, options);
+
+			google.visualization.events.addListener(chart, 'select', function() 
+			{
+				var selecionado = chart.getSelection()[0];
+
+				if (selecionado) 
+				{
+					var linguagem = data.getValue(selecionado.row, 0);
+				
+					var textUser =/*[[${listaPorcentagens != null} ? ${listaPorcentagens[0].usuario} : '']]*/ "";
+					
+					if(textUser != ''){
+						window.location.href = "/repositoriosPorLinguagem?user=" + textUser + "&linguagem="+ escape(linguagem);
+					}
+				}
+			});
+			
         }
+
+		
     </script>
 
 </head>
@@ -72,7 +91,7 @@ body {
 	<div class="d-flex justify-content-center">
 		<form action="/index" method="get">
 			<div class="row form-group">
-				<label for="nome">Usuário</label> <input name="user"
+				<label for="nome">Usuário</label> <input name="user" 
 					class="form-control" />
 			</div>
 
@@ -89,7 +108,7 @@ body {
 
 	<br>
 
-	<span th:text="${listaPorcentagens != null} ? ${listaPorcentagens[0].usuario} : ''"></span>
+	<span id="userTh" th:text="${listaPorcentagens != null} ? ${listaPorcentagens[0].usuario} : ''"></span>
 
 
 <!-- 	<div class="d-flex justify-content-center">
