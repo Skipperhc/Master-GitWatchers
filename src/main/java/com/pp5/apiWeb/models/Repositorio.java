@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Repositorio {
 	private String donoRepos;
 	
+	private String imgPerfil;
+	
 	@JsonProperty("language")
 	private String linguagem;
 	
@@ -15,6 +17,10 @@ public class Repositorio {
 	
 	@JsonProperty("html_url")
 	private String url;
+	
+	private String urlDownloadZip;
+	
+	private String urlDownloadTar;
 	
 	public Repositorio() {
 		super();
@@ -36,8 +42,37 @@ public class Repositorio {
 	@JsonProperty("owner")
 	private void unpackLogin(Map<String, String> owner) {
 		donoRepos = owner.get("login");
+		imgPerfil = owner.get("avatar_url");
+		if(donoRepos != null && nome != null) {
+			urlDownloadZip = String.format("https://api.github.com/repos/%s/%s/zipball", donoRepos, nome);
+			urlDownloadTar = String.format("https://api.github.com/repos/%s/%s/tarball", donoRepos, nome);
+		}
 	}
 	
+	public String getImgPerfil() {
+		return imgPerfil;
+	}
+
+	public void setImgPerfil(String imgPerfil) {
+		this.imgPerfil = imgPerfil;
+	}
+
+	public String getUrlDownloadZip() {
+		return urlDownloadZip;
+	}
+
+	public void setUrlDownloadZip(String urlDownloadZip) {
+		this.urlDownloadZip = urlDownloadZip;
+	}
+
+	public String getUrlDownloadTar() {
+		return urlDownloadTar;
+	}
+
+	public void setUrlDownloadTar(String urlDownloadTar) {
+		this.urlDownloadTar = urlDownloadTar;
+	}
+
 	public String getUrl() {
 		return url;
 	}
