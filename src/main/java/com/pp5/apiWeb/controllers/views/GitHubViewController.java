@@ -95,11 +95,11 @@ public class GitHubViewController {
 		return useCaseGithub.montarViewReposDetails(user, repositorio);
 	}
 	
-	@RequestMapping(value = "/teste", method = RequestMethod.GET)
+	@RequestMapping(value = "/detalhes", method = RequestMethod.GET)
 	public ModelAndView showReposDetails()  
 	{
 		useCaseGitHub useCaseGithub = new useCaseGitHub();
 
-		return useCaseGithub.viewTeste();
+		return useCaseGithub.viewDetalhes();
 	}
 }

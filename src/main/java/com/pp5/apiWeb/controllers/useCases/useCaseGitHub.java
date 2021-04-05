@@ -113,8 +113,8 @@ public class useCaseGitHub {
 		return model;
     }
     
-    public ModelAndView viewTeste() {
-    	ModelAndView model = new ModelAndView("teste");
+    public ModelAndView viewDetalhes() {
+    	ModelAndView model = new ModelAndView("detalhesRepositorios");
     	return model;
     }
 
