@@ -23,6 +23,7 @@
 	src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
 	integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
 	crossorigin="anonymous"></script>
+
 <script defer
 	src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
 	integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
@@ -34,47 +35,11 @@
 
 <link rel="stylesheet" th:href="style.css">
 
-
-<script src="https://www.google.com/jsapi"></script>
-
-<script type="text/javascript" th:inline="javascript"> 
-
-        // Load the Visualization API and the corechart package.
-        google.charts.load('current', {'packages':['corechart']});
-
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
-
-        // Callback that creates and populates a data table,
-        // instantiates the pie chart, passes in the data and
-        // draws it.
-        function drawChart() {
-
-            // Create the data table.
-/*             var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Topping');
-            data.addColumn('number', 'Slices');
-            data.addRows([[${chartData}]]); 
-*/
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Topping');
-            data.addColumn('number', 'Slices');
-            data.addRows([
-                /*[# th:each="row : ${chartData}"]*/
-                [[${row}]],
-                /*[/]*/
-            ]);
-            
-            // Set chart options
-            var options = {'title':'Porcentagem de repositorio por linguagens',
-                'width':500,
-                'height':500};
-
-            // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-        }
-    </script>
+<style>
+.imagem {
+	border-radius: 50%
+}
+</style>
 
 </head>
 <body th:erroFuncao="${errorMessage}" th:onload="SweetAlertErro()">
@@ -111,7 +76,6 @@
 
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
 				<div class="container-fluid">
-
 					<button type="button" id="sidebarCollapse" class="navbar-btn">
 						<span></span> <span></span> <span></span>
 					</button>
@@ -134,89 +98,91 @@
 					</div>
 				</div>
 			</nav>
-
-			<br>
-			<div class="d-flex">
-				<div class="container">
-					<form action="/detalhes" method="get">
-						<div class="row form-group justify-content-center">
-							<div class="col-4">
-								<label class="d-flex justify-content-center" for="nome">Usuário</label>
-								<input name="user"
-									th:value="${usuario != null} ? ${usuario} : ''"
-									class="form-control" />
-							</div>
+			<div class="container">
+				<h4 th:text="${'Projeto: ' + repos}"></h4>
+				<th:block th:each="contribuidor : ${listaContribuidores}">
+					<div class="row justify-content-center">
+						<div class="col-1">
+							<a th:href="${contribuidor.perfilLink}" target="_blank"> <img
+								class="imagem" th:src="${contribuidor.imgPerfil}" width="60"
+								height="60">
+							</a>
 						</div>
 
-						<br>
-
-						<div class="row form-group">
-							<div class="d-flex justify-content-center">
-								<button type="submit" class="btn btn-success">Buscar</button>
-							</div>
+						<div class="col-3 align-self-center">
+							<h4 th:text="${contribuidor.nome}"></h4>
 						</div>
 
-					</form>
-				</div>
-			</div>
+						<div class="col align-self-center">
+							<h6>Linhas adicionadas:</h6>
+							<h4 th:text="${contribuidor.qtdAdicionadas}"></h4>
+						</div>
 
-			<br>
-			<div th:if="${listaPorcentagens != null}">
-				<div th:if="${listaPorcentagens.size() > 0}" class="container">
-					<div class="row justify-content-start">
-						<div class="col-6">
-							<div style="height: 500px; width: 600px; overflow: auto;">
-								<div th:each="repositorio : ${listaRepositorios}">
-									<th:block
-										th:with="idheader=${'header' + repositorio.nome}, idcollapse=${'collapse' + repositorio.nome}">
-										<div class="accordion" id="accordionExample">
-											<div class="accordion-item">
-												<h2 class="accordion-header" th:id="${idheader}">
-													<button class="accordion-button collapsed" type="button"
-														data-bs-toggle="collapse"
-														th:data-bs-target="${'#' + idcollapse}"
-														th:aria-expanded="${verificador}" aria-controls="false"
-														th:text="${repositorio.nome}"></button>
-												</h2>
-												<div th:id="${idcollapse}"
-													class="accordion-collapse collapse"
-													th:aria-labelledby="${idheader}"
-													data-bs-parent="#accordionExample">
-													<div class="accordion-body">
+						<div class="col align-self-center">
+							<h6>Linhas removidas:</h6>
+							<h4 th:text="${contribuidor.qtdDeletadas}"></h4>
+						</div>
+
+						<div class="col align-self-center">
+							<h6>Commits:</h6>
+							<h4 th:text="${contribuidor.contribuicoes}"></h4>
+						</div>
+
+					</div>
+				</th:block>
+				<br>
+				<div class="row justify-content-start">
+					<div class="col-12">
+
+						<div th:each="semana : ${listaContribuicoesSemana}">
+							<th:block
+								th:with="idheader=${'header' + semana.id}, idcollapse=${'collapse' + semana.id}">
+								<div class="accordion" id="accordionExample">
+									<div class="accordion-item">
+										<h2 class="accordion-header" th:id="${idheader}">
+											<button class="accordion-button collapsed" type="button"
+												data-bs-toggle="collapse"
+												th:data-bs-target="${'#' + idcollapse}"
+												th:aria-expanded="${verificador}" aria-controls="false"
+												th:text="${semana.doDiaAte + ' | linhas alteradas:' + semana.linhasAlteradas + ' | Commits:' + semana.qtdCommits }"></button>
+										</h2>
+										<div th:id="${idcollapse}" class="accordion-collapse collapse"
+											th:aria-labelledby="${idheader}"
+											data-bs-parent="#accordionExample">
+											<div class="accordion-body">
+												<div class="container">
+													<div class="row justify-content-center">
+
 														<div class="container">
-															<div class="row justify-content-evenly">
-																<div class="col">
-																	<img th:src="${repositorio.imgPerfil}"
-																		th:alt="${'icn perfil' + repositorio.donoRepos}"
-																		width="60" height="60">
-																	<p th:text="${repositorio.donoRepos}"></p>
+															<th:block
+																th:each="contribuidor : ${semana.contribuidoresDaSemana}">
+																<div class="row">
+																	<div class="col">
+																		<h5 th:text="${contribuidor.nome}"></h5>
+																	</div>
+																	<div class="col">
+																		<h5
+																			th:text="${'Linhas adicionadas: ' + contribuidor.linhasAdicionadas}"></h5>
+																	</div>
+																	<div class="col">
+																		<h5
+																			th:text="${'linhas deletadas: ' + contribuidor.linhasDeletadas}"></h5>
+																	</div>
+																	<div class="col">
+																		<h5 th:text="${'Commits: ' + contribuidor.qtdCommits}"></h5>
+																	</div>
 																</div>
-																<div class="col">
-																	<a
-																		th:href="${'/linhascontribuidas?user=' + repositorio.donoRepos + '&repositorio=' + repositorio.nome}"><button
-																			type="button" class="btn btn-secondary">Linhas
-																			alteradas por semana</button></a>
-																</div>
-																<div class="col">
-																	<a th:href="${repositorio.urlDownloadZip}"
-																		target="_blank"><button type="button"
-																			class="btn btn-secondary">Download Zip</button></a> <a
-																		th:href="${repositorio.urlDownloadTar}"
-																		target="_blank"><button type="button"
-																			class="btn btn-secondary">Download Tar</button></a>
-																</div>
-																<div class="col"></div>
-															</div>
+															</th:block>
 														</div>
+
 													</div>
 												</div>
 											</div>
 										</div>
-									</th:block>
+									</div>
 								</div>
-							</div>
+							</th:block>
 						</div>
-						<div id="chart_div" class="d-flex col-6 justify-content-center"></div>
 					</div>
 				</div>
 			</div>
@@ -241,13 +207,13 @@
 		crossorigin="anonymous"></script>
 
 	<script type="text/javascript">
-        $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-                $(this).toggleClass('active');
-            });
-        });
-    </script>
+		$(document).ready(function() {
+			$('#sidebarCollapse').on('click', function() {
+				$('#sidebar').toggleClass('active');
+				$(this).toggleClass('active');
+			});
+		});
+	</script>
 
 
 	<script
@@ -259,12 +225,12 @@
 		function isEmpty(str) {
 			return (!str || 0 === str.length);
 		}
-		
-		$(document).ready(function(){
-		    $('.collapse').on('show.bs.collapse', function (e) {
-		        $('.collapse').collapse("hide")
-		    })
-		});		
+
+		$(document).ready(function() {
+			$('.collapse').on('show.bs.collapse', function(e) {
+				$('.collapse').collapse("hide")
+			})
+		});
 
 		function SweetAlertErro() {
 			var erro = document.querySelectorAll('body')[0]

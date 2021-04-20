@@ -79,149 +79,73 @@
 </head>
 <body th:erroFuncao="${errorMessage}" th:onload="SweetAlertErro()">
 
-	<!-- <div th:replace="base/layout :: navbar"></div> -->
-
-
-	<!-- <div th:replace="base/layout :: navbar"></div> -->
-	<div class="wrapper">
-		<!-- Sidebar Holder -->
-		<nav id="sidebar">
-			<div class="sidebar-header">
-				<h3>GitWatchers</h3>
-			</div>
-			<ul class="list-unstyled components">
-				<li><a href="/">Home</a></li>
-
-				<li class="active"><a href="#homeSubmenu"
-					data-toggle="collapse" aria-expanded="false"
-					class="dropdown-toggle">Páginas</a>
-					<ul class="collapse list-unstyled" id="homeSubmenu">
-						<li><a href="/">Home</a></li>
-						<li><a href="/colaboracoes">Colaborações</a></li>
-						<li><a href="/repositorios">Repositorios</a></li>
-
-						<li><a href="/detalhes">Detalhes</a></li>
-					</ul></li>
-				<li><a href="#">Github</a></li>
-			</ul>
-		</nav>
-
-		<!-- Page Content Holder -->
-		<div id="content">
-
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container-fluid">
-
-					<button type="button" id="sidebarCollapse" class="navbar-btn">
-						<span></span> <span></span> <span></span>
-					</button>
-					<button class="btn btn-dark d-inline-block d-lg-none ml-auto"
-						type="button" data-toggle="collapse"
-						data-target="#navbarSupportedContent"
-						aria-controls="navbarSupportedContent" aria-expanded="false"
-						aria-label="Toggle navigation">
-						<i class="fas fa-align-justify"></i>
-					</button>
-
-					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul class="nav navbar-nav ml-auto">
-							<li class="nav-item active"><a class="nav-link" href="/">Inicio</a>
-							</li>
-							<li class="nav-item"><a class="nav-link" href="#">Em
-									breve...</a></li>
-
-						</ul>
-					</div>
-				</div>
-			</nav>
-
-			<br>
-			<div class="d-flex">
-				<div class="container">
-					<form action="/detalhes" method="get">
-						<div class="row form-group justify-content-center">
-							<div class="col-4">
-								<label class="d-flex justify-content-center" for="nome">Usuário</label>
-								<input name="user"
-									th:value="${usuario != null} ? ${usuario} : ''"
-									class="form-control" />
-							</div>
-						</div>
-
-						<br>
-
-						<div class="row form-group">
-							<div class="d-flex justify-content-center">
-								<button type="submit" class="btn btn-success">Buscar</button>
-							</div>
-						</div>
-
-					</form>
-				</div>
-			</div>
-
-			<br>
-			<div th:if="${listaPorcentagens != null}">
-				<div th:if="${listaPorcentagens.size() > 0}" class="container">
-					<div class="row justify-content-start">
-						<div class="col-6">
-							<div style="height: 500px; width: 600px; overflow: auto;">
-								<div th:each="repositorio : ${listaRepositorios}">
-									<th:block
-										th:with="idheader=${'header' + repositorio.nome}, idcollapse=${'collapse' + repositorio.nome}">
-										<div class="accordion" id="accordionExample">
-											<div class="accordion-item">
-												<h2 class="accordion-header" th:id="${idheader}">
-													<button class="accordion-button collapsed" type="button"
-														data-bs-toggle="collapse"
-														th:data-bs-target="${'#' + idcollapse}"
-														th:aria-expanded="${verificador}" aria-controls="false"
-														th:text="${repositorio.nome}"></button>
-												</h2>
-												<div th:id="${idcollapse}"
-													class="accordion-collapse collapse"
-													th:aria-labelledby="${idheader}"
-													data-bs-parent="#accordionExample">
-													<div class="accordion-body">
-														<div class="container">
-															<div class="row justify-content-evenly">
-																<div class="col">
-																	<img th:src="${repositorio.imgPerfil}"
-																		th:alt="${'icn perfil' + repositorio.donoRepos}"
-																		width="60" height="60">
-																	<p th:text="${repositorio.donoRepos}"></p>
-																</div>
-																<div class="col">
-																	<a
-																		th:href="${'/linhascontribuidas?user=' + repositorio.donoRepos + '&repositorio=' + repositorio.nome}"><button
-																			type="button" class="btn btn-secondary">Linhas
-																			alteradas por semana</button></a>
-																</div>
-																<div class="col">
-																	<a th:href="${repositorio.urlDownloadZip}"
-																		target="_blank"><button type="button"
-																			class="btn btn-secondary">Download Zip</button></a> <a
-																		th:href="${repositorio.urlDownloadTar}"
-																		target="_blank"><button type="button"
-																			class="btn btn-secondary">Download Tar</button></a>
-																</div>
-																<div class="col"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</th:block>
-								</div>
-							</div>
-						</div>
-						<div id="chart_div" class="d-flex col-6 justify-content-center"></div>
-					</div>
+	<div class="accordion" id="accordionExample">
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="heading One">
+				<button class="accordion-button" type="button"
+					data-bs-toggle="collapse" data-bs-target="#collapse One"
+					aria-expanded="true" aria-controls="collapse One">
+					Accordion Item #1</button>
+			</h2>
+			<div id="collapse One" class="accordion-collapse collapse show"
+				aria-labelledby="heading One" data-bs-parent="#accordionExample">
+				<div class="accordion-body">
+					<strong>This is the first item's accordion body.</strong> It is
+					hidden by default, until the collapse plugin adds the appropriate
+					classes that we use to style each element. These classes control
+					the overall appearance, as well as the showing and hiding via CSS
+					transitions. You can modify any of this with custom CSS or
+					overriding our default variables. It's also worth noting that just
+					about any HTML can go within the
+					<code>.accordion-body</code>
+					, though the transition does limit overflow.
 				</div>
 			</div>
 		</div>
-
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingTwo">
+				<button class="accordion-button collapsed" type="button"
+					data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+					aria-expanded="false" aria-controls="collapseTwo">
+					Accordion Item #2</button>
+			</h2>
+			<div id="collapseTwo" class="accordion-collapse collapse"
+				aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+				<div class="accordion-body">
+					<strong>This is the second item's accordion body.</strong> It is
+					hidden by default, until the collapse plugin adds the appropriate
+					classes that we use to style each element. These classes control
+					the overall appearance, as well as the showing and hiding via CSS
+					transitions. You can modify any of this with custom CSS or
+					overriding our default variables. It's also worth noting that just
+					about any HTML can go within the
+					<code>.accordion-body</code>
+					, though the transition does limit overflow.
+				</div>
+			</div>
+		</div>
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingThree">
+				<button class="accordion-button collapsed" type="button"
+					data-bs-toggle="collapse" data-bs-target="#collapseThree"
+					aria-expanded="false" aria-controls="collapseThree">
+					Accordion Item #3</button>
+			</h2>
+			<div id="collapseThree" class="accordion-collapse collapse"
+				aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+				<div class="accordion-body">
+					<strong>This is the third item's accordion body.</strong> It is
+					hidden by default, until the collapse plugin adds the appropriate
+					classes that we use to style each element. These classes control
+					the overall appearance, as well as the showing and hiding via CSS
+					transitions. You can modify any of this with custom CSS or
+					overriding our default variables. It's also worth noting that just
+					about any HTML can go within the
+					<code>.accordion-body</code>
+					, though the transition does limit overflow.
+				</div>
+			</div>
+		</div>
 	</div>
 
 

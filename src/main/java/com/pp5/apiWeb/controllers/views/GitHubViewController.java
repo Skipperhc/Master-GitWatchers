@@ -53,53 +53,54 @@ public class GitHubViewController {
 	}
 
 	@RequestMapping(value = "/colaboracoes", method = RequestMethod.GET)
-    public ModelAndView showColabsHTML(String user, String nomeRepositorio) {
-        ModelAndView model = new ModelAndView("colaboracoes");
-        return model;
-    }
+	public ModelAndView showColabsHTML(String user, String nomeRepositorio) {
+		ModelAndView model = new ModelAndView("colaboracoes");
+		return model;
+	}
 
 	@RequestMapping(value = "/colaboracoesPorUsuario", method = RequestMethod.GET)
-	public ModelAndView showColabs(
-		@RequestParam(value = "user", required = false) String user,
-		@RequestParam(value = "nomeRepositorio", required = false) String nomeRepositorio)  
-	{
+	public ModelAndView showColabs(@RequestParam(value = "user", required = false) String user,
+			@RequestParam(value = "nomeRepositorio", required = false) String nomeRepositorio) {
 		useCaseGitHub useCaseGithub = new useCaseGitHub();
 
 		return useCaseGithub.MontarViewColaboracoes(user, nomeRepositorio);
 	}
 
 	@RequestMapping(value = "/repositorios", method = RequestMethod.GET)
-	public ModelAndView showReposHTML()  
-	{
+	public ModelAndView showReposHTML() {
 		ModelAndView model = new ModelAndView("repositorios");
-        return model;
+		return model;
 	}
 
 	@RequestMapping(value = "/repositoriosPorLinguagem", method = RequestMethod.GET)
-	public ModelAndView showRepos(
-		@RequestParam(value = "user", required = false) String user,
-		@RequestParam(value = "linguagem", required = false) String linguagem)  
-	{
+	public ModelAndView showRepos(@RequestParam(value = "user", required = false) String user,
+			@RequestParam(value = "linguagem", required = false) String linguagem) {
 		useCaseGitHub useCaseGithub = new useCaseGitHub();
 
 		return useCaseGithub.MontarViewRepositorio(user, linguagem);
 	}
-	
-	@RequestMapping(value = "/detalhesrepositorios", method = RequestMethod.GET)
-	public ModelAndView showReposDetails(
-		@RequestParam(value = "user", required = false) String user,
-		@RequestParam(value = "repositorio", required = false) String repositorio)  
-	{
+
+	@RequestMapping(value = "/detalhes", method = RequestMethod.GET)
+	public ModelAndView showReposDetails(@RequestParam(value = "user", required = false) String user,
+			@RequestParam(value = "repositorio", required = false) String repositorio) {
 		useCaseGitHub useCaseGithub = new useCaseGitHub();
 
 		return useCaseGithub.montarViewReposDetails(user, repositorio);
 	}
-	
-	@RequestMapping(value = "/detalhes", method = RequestMethod.GET)
-	public ModelAndView showReposDetails()  
-	{
+
+	@RequestMapping(value = "/teste", method = RequestMethod.GET)
+	public ModelAndView showTeste() {
 		useCaseGitHub useCaseGithub = new useCaseGitHub();
 
-		return useCaseGithub.viewDetalhes();
+		return useCaseGithub.viewTeste();
+	}
+
+	@RequestMapping(value = "/linhascontribuidas", method = RequestMethod.GET)
+	public ModelAndView showLinhasContribuidas(
+			@RequestParam(value = "user", required = false) String user,
+			@RequestParam(value = "repositorio", required = false) String repositorio) {
+		useCaseGitHub useCaseGithub = new useCaseGitHub();
+
+		return useCaseGithub.montarViewLinhasSemana(user, repositorio);
 	}
 }
